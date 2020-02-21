@@ -60,6 +60,59 @@ int binary_search(int *arr, int lo, int hi, int target)
     return -1;
 }
 
+int lm_binary_search(int *arr, int lo, int hi, int target)
+{
+    int len = hi + 1;
+    while (lo <= hi)
+    {
+        int mid = lo + (hi - lo) / 2;
+        if (arr[mid] >= target)
+        {
+            hi = mid - 1;
+        }
+        else
+        {
+            lo = mid + 1;
+        }
+    }
+    if (arr[lo] == target)
+    {
+        return lo;
+    }
+    if (lo < len - 1 && arr[lo + 1] == target)
+    {
+        return lo + 1;
+    }
+    return -1;
+}
+
+int rm_binary_search(int *arr, int lo, int hi, int target)
+{
+    int mid, len = hi + 1;
+    while (lo <= hi)
+    {
+        mid = lo + (hi - lo) / 2;
+        if (arr[mid] <= target)
+        {
+            lo = mid + 1;
+        }
+        else
+        {
+            hi = mid - 1;
+        }
+    }
+
+    if (arr[lo] == target)
+    {
+        return lo;
+    }
+    if (lo > 0 && arr[lo - 1] == target)
+    {
+        return lo - 1;
+    }
+    return -1;
+}
+
 void print(int *arr, int size)
 {
     for (int i = 0; i < size; i++)
@@ -94,7 +147,7 @@ int main()
     {
         t = rand() % 100;
     } while (mem[t] == 0);
-    int idx = binary_search(arr, 0, N - 1, t);
+    int idx = rm_binary_search(arr, 0, N - 1, t);
     printf("target=%d, idx=%d\n", t, idx);
     return 0;
 }
