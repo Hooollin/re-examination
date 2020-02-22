@@ -205,7 +205,6 @@ int ysfdg(int sum, int value, int n)
  * 枯了，排序的时候lo < hi就可以，但是有lo == hi，就是说待排的空间大小只为1且必定为答案，这个时候需要返回而不是不处理...
  * 花了20分钟排坑
 */
-
 int kthElement(int *arr, int lo, int hi, int k)
 {
     if (lo <= hi)
@@ -242,6 +241,112 @@ int kthElement(int *arr, int lo, int hi, int k)
             return kthElement(arr, _lo, lo - 1, k);
         }
         return kthElement(arr, lo + 1, _hi, k);
+    }
+}
+
+/**
+ * 轻松改成迭代
+ */
+int _kthElement(int *arr, int lo, int hi, int k)
+{
+    while (lo <= hi)
+    {
+        int _lo = lo, _hi = hi;
+        int key = arr[lo];
+        while (lo < hi)
+        {
+            while (lo < hi && arr[hi] >= key)
+            {
+                hi--;
+            }
+            arr[lo] = arr[hi];
+            while (lo < hi && arr[lo] < key)
+            {
+                lo++;
+            }
+            arr[hi] = arr[lo];
+        }
+        //printf("key:%d, lo:%d\n", key, lo);
+        arr[lo] = key;
+        //for (int i = 0; i < 10; i++)
+        //{
+        //printf("%d\t", arr[i]);
+        //}
+        //printf("\n");
+        if (lo == k - 1)
+        {
+            //   printf("solution: %d = %d ?\n", lo, k - 1);
+            return key;
+        }
+        else if (lo > k - 1)
+        {
+            hi = lo - 1;
+            lo = _lo;
+        }
+        lo = lo + 1;
+        hi = _hi;
+    }
+}
+
+/**
+ * 将字符串的数字提取出来
+ * 应该一遍遍历就好了吧
+ * 🐂🍺，不过溢出就没办法了，不想用数组存储啦
+ */
+void getNumberFromStr(char *str)
+{
+    int idx = 0, sum = 0;
+    for (; str[idx] != '\0'; idx++)
+    {
+        int t = str[idx] - '0';
+        if (t >= 0 && t <= 9)
+        {
+            sum = sum * 10 + t;
+        }
+        else
+        {
+            if (sum > 0)
+            {
+                printf("%d\n", sum);
+            }
+            sum = 0;
+        }
+    }
+    if (sum != 0)
+    {
+        printf("%d\n", sum);
+    }
+}
+
+/**
+ * 20个数据（整型+浮点），逆序输入到单链表中
+ * 头插法
+ */
+typedef struct node
+{
+    float data;
+    struct node *next;
+} LinkedList;
+
+void reverseBuildLinkedList()
+{
+    LinkedList *head = (LinkedList *)malloc(sizeof(LinkedList)), *curr;
+    head->next = NULL, curr = head->next;
+    for (int i = 0; i < 3; i++)
+    {
+        float input;
+        scanf("%f", &input);
+        LinkedList *newNode = (LinkedList *)malloc(sizeof(LinkedList));
+        newNode->data = input;
+        newNode->next = curr;
+        head->next = newNode;
+        curr = newNode;
+    }
+    curr = head->next;
+    for (int i = 0; i < 3; i++)
+    {
+        printf("%f->", curr->data);
+        curr = curr->next;
     }
 }
 
@@ -282,12 +387,16 @@ int main()
 
     //ysfh(30, 9, 15);
 
-    int k = 1;
-    scanf("%d", &k);
-    int arr[10] = {3, 2, 1, 5, 4, 6, 9, 8, 7, 10};
-    printf("%d\n", kthElement(arr, 0, 9, k));
-    for (int i = 0; i < 10; i++)
-    {
-        printf("%d\t", arr[i]);
-    }
+    //int k = 1;
+    //scanf("%d", &k);
+    //int arr[10] = {3, 2, 1, 5, 4, 6, 9, 8, 7, 10};
+    //printf("%d\n", _kthElement(arr, 0, 9, k));
+    //for (int i = 0; i < 10; i++)
+    //{
+    //printf("%d\t", arr[i]);
+    //}
+
+    //getNumberFromStr("uestc23242hel21223lo1232hei233");
+
+    reverseBuildLinkedList();
 }
