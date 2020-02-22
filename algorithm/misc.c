@@ -450,7 +450,26 @@ void delSpecifiedChars(char *str)
     str[pos] = '\0';
     printf("%s", str);
 }
-
+/**
+ * 删除数组中的重复项
+ * 从上个算法题以及自己之前的惨痛教训的出来的经验
+ * 希望自己以后不要忘记
+ */
+void delDup(int *arr, int size)
+{
+    int pos = 1;
+    for (int i = 1; i < size; i++)
+    {
+        if (arr[i] != arr[i - 1])
+        {
+            arr[pos++] = arr[i];
+        }
+    }
+    for (int i = 0; i < pos; i++)
+    {
+        printf("%d\t", arr[i]);
+    }
+}
 int main()
 {
     //    srand(time(0));
@@ -503,6 +522,8 @@ int main()
     //char str[20] = {"helloworld"};
     //reverseStr(str);
     //printf("%d", _strcmp("hello", "hello"));
-    char str[20] = "hz..,,12321,,,*&#@&#";
-    delSpecifiedChars(str);
+    //char str[20] = "hz..,,12321,,,*&#@&#";
+    //delSpecifiedChars(str);
+    int arr[10] = {2, 3, 3, 3, 3, 3, 3, 3, 3, 3};
+    delDup(arr, 10);
 }
