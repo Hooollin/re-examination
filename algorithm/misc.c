@@ -145,6 +145,61 @@ void prime(int n)
         }
     }
 }
+/**
+ * 字符串交换算法。交换一下指向的地址就好了
+*/
+void swapStr(char *str1, char *str2)
+{
+    char *temp = str1;
+    str1 = str2;
+    str2 = temp;
+    printf("str1:%s,str2:%s", str1, str2);
+}
+
+/**
+ * 约瑟夫环
+ * n总人数，k报数，m是杀到剩下多少停止
+ * 有点麻烦，建议考前再复习一下
+ */
+void ysfh(int n, int k, int m)
+{
+    int *remain = (int *)malloc(sizeof(int) * n);
+    for (int i = 0; i < n; i++)
+    {
+        remain[i] = 0;
+    }
+    // i是有效的increment增量
+    int count = 0, start = 0, i = 0;
+    while (count < m)
+    {
+        i = 0;
+        while (i < k - 1)
+        {
+            if (remain[start] == 0)
+            {
+                i++;
+            }
+            do
+            {
+                start = (start + 1) % n;
+            } while (remain[start] == 1);
+        }
+        printf("%d\t", start);
+        remain[start] = 1;
+        count += 1;
+    }
+}
+/**
+ * 带佬的约瑟夫环
+*/
+
+int ysfdg(int sum, int value, int n)
+{
+    if (n == 1)
+        return (sum + value - 1) % sum;
+    else
+        return (ysfdg(sum - 1, value, n - 1) + value) % sum;
+}
 
 int main()
 {
@@ -175,6 +230,11 @@ int main()
     //}
     //return 0;
 
-    prime(100);
-    return 0;
+    // prime(100);
+    //return 0;
+
+    //swapStr("hello", "world");
+    //return 0;
+
+    ysfh(30, 9, 15);
 }
