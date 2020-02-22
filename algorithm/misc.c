@@ -3,11 +3,11 @@
 #include <stdlib.h>
 #include <math.h>
 
-void swap(int a, int b)
+void swap(int *arr, int i, int j)
 {
-    int t = a;
-    a = b;
-    b = t;
+    int t = arr[i];
+    arr[i] = arr[j];
+    arr[j] = t;
 }
 
 /**
@@ -192,13 +192,57 @@ void ysfh(int n, int k, int m)
 /**
  * 带佬的约瑟夫环
 */
-
 int ysfdg(int sum, int value, int n)
 {
     if (n == 1)
         return (sum + value - 1) % sum;
     else
         return (ysfdg(sum - 1, value, n - 1) + value) % sum;
+}
+
+/**
+ * 快排求第k小，感觉很有可能考
+ * 枯了，排序的时候lo < hi就可以，但是有lo == hi，就是说待排的空间大小只为1且必定为答案，这个时候需要返回而不是不处理...
+ * 花了20分钟排坑
+*/
+
+int kthElement(int *arr, int lo, int hi, int k)
+{
+    if (lo <= hi)
+    {
+        int _lo = lo, _hi = hi;
+        int key = arr[lo];
+        while (lo < hi)
+        {
+            while (lo < hi && arr[hi] >= key)
+            {
+                hi--;
+            }
+            arr[lo] = arr[hi];
+            while (lo < hi && arr[lo] < key)
+            {
+                lo++;
+            }
+            arr[hi] = arr[lo];
+        }
+        //printf("key:%d, lo:%d\n", key, lo);
+        arr[lo] = key;
+        //for (int i = 0; i < 10; i++)
+        //{
+        //printf("%d\t", arr[i]);
+        //}
+        //printf("\n");
+        if (lo == k - 1)
+        {
+            //   printf("solution: %d = %d ?\n", lo, k - 1);
+            return key;
+        }
+        else if (lo > k - 1)
+        {
+            return kthElement(arr, _lo, lo - 1, k);
+        }
+        return kthElement(arr, lo + 1, _hi, k);
+    }
 }
 
 int main()
@@ -236,5 +280,14 @@ int main()
     //swapStr("hello", "world");
     //return 0;
 
-    ysfh(30, 9, 15);
+    //ysfh(30, 9, 15);
+
+    int k = 1;
+    scanf("%d", &k);
+    int arr[10] = {3, 2, 1, 5, 4, 6, 9, 8, 7, 10};
+    printf("%d\n", kthElement(arr, 0, 9, k));
+    for (int i = 0; i < 10; i++)
+    {
+        printf("%d\t", arr[i]);
+    }
 }
