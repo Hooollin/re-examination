@@ -350,6 +350,38 @@ void reverseBuildLinkedList()
     }
 }
 
+/**
+ * 逆序字符数组
+ * 迭代或者递归实现，双指针
+ */
+void reverseStr(char *str)
+{
+    int len = 0;
+    for (; str[len] != '\0'; len++)
+        ;
+    int start = 0, end = len - 1;
+    while (start < end)
+    {
+        char t = str[start];
+        str[start] = str[end];
+        str[end] = t;
+        start++, end--;
+    }
+    printf("%s", str);
+}
+// 这里只想到了能够怎么逆序输出
+void _reverseStr(char *str, int i)
+{
+    if (i < 0)
+    {
+        return;
+    }
+    if (str[i] != '\0')
+    {
+        _reverseStr(str, i + 1);
+    }
+    printf("%c", str[i]);
+}
 int main()
 {
     //    srand(time(0));
@@ -398,5 +430,7 @@ int main()
 
     //getNumberFromStr("uestc23242hel21223lo1232hei233");
 
-    reverseBuildLinkedList();
+    //reverseBuildLinkedList();
+    char str[20] = {"helloworld"};
+    reverseStr(str);
 }
