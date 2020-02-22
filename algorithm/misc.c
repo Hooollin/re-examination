@@ -382,6 +382,75 @@ void _reverseStr(char *str, int i)
     }
     printf("%c", str[i]);
 }
+
+/**
+ * 比较两个字符串是否相等
+ * 规则和string.h的strcmp一样
+ * 很强
+ */
+
+int _strcmp(char *str1, char *str2)
+{
+    int len1 = 0, len2 = 0;
+    while (str1[len1] != '\0' && str2[len2] != '\0')
+    {
+        if (str1[len1] != str2[len2])
+        {
+            return str1[len1] - str2[len2];
+        }
+        len1++;
+        len2++;
+    }
+    if (str1[len1] != '\0')
+    {
+        return str1[len1];
+    }
+    if (str2[len2] != '\0')
+    {
+        return str2[len2];
+    }
+    return 0;
+}
+
+/**
+ * 怎么理解这段代码
+ * 首先--的优先级大于*，那么这里返回值为2
+ * 关键是这里作为参数传入的地址不会因为++改变main函数里面的那个指针指向的地址
+ */
+
+int func(int *t)
+{
+    printf("%p\n", t);
+    return (*t++ = 3) - 1;
+}
+/**
+ * 去掉字符串中的字母数字和重复项
+ * 最简单的思想是以空间换时间，并且需要避免移动大量的字符，那么可以通过维护一个插入pos来实现。
+ * pos差点没想到...🐂🍺
+ */
+void delSpecifiedChars(char *str)
+{
+    int mem[128], len = 0, pos = 0;
+    for (int i = 0; i < 128; i++)
+    {
+        mem[i] = 0;
+    }
+    for (; str[len] != '\0'; len++)
+    {
+        if (mem[str[len]] > 0 || str[len] >= '0' && str[len] <= '9' || str[len] >= 'a' && str[len] <= 'z' || str[len] >= 'A' && str[len] <= 'Z')
+        {
+            continue;
+        }
+        else
+        {
+            str[pos++] = str[len];
+            mem[str[len]]++;
+        }
+    }
+    str[pos] = '\0';
+    printf("%s", str);
+}
+
 int main()
 {
     //    srand(time(0));
@@ -431,6 +500,9 @@ int main()
     //getNumberFromStr("uestc23242hel21223lo1232hei233");
 
     //reverseBuildLinkedList();
-    char str[20] = {"helloworld"};
-    reverseStr(str);
+    //char str[20] = {"helloworld"};
+    //reverseStr(str);
+    //printf("%d", _strcmp("hello", "hello"));
+    char str[20] = "hz..,,12321,,,*&#@&#";
+    delSpecifiedChars(str);
 }
