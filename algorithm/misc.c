@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <math.h>
 
 void swap(int a, int b)
 {
@@ -93,6 +94,58 @@ int *mergeTwoSortedArray(int *A1, int *A2, int size1, int size2)
     }
     return A1;
 }
+
+/**
+ * 筛选法求素数，感觉好玄幻啊
+ * 偶数一定不是素数，素数的倍数一定不是素数，素数的因数小于sqrt(素数)
+ * 原理：https://blog.csdn.net/qq_34739984/article/details/52999528?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task
+ * 🐂🍺
+*/
+void prime(int n)
+{
+    int *p = (int *)malloc(sizeof(int) * n);
+    for (int i = 0; i < n; i++)
+    {
+        p[i] = 0;
+    }
+    // 筛选出不是偶数的数
+    for (int i = 2; i < n; i++)
+    {
+        if (i % 2 == 0 && i != 2)
+        {
+            p[i] = 0;
+        }
+        else
+        {
+            p[i] = 1;
+        }
+    }
+
+    for (int i = 3; i < sqrt(n); i++)
+    {
+        if (p[i] == 1)
+        {
+            for (int j = i + i; j < n; j += i)
+            {
+                p[j] = 0;
+            }
+        }
+    }
+
+    int count = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (p[i] == 1)
+        {
+            if (count++ % 10 == 0)
+            {
+                printf("\n");
+            }
+            printf("%d\t", i);
+        }
+    }
+}
+
 int main()
 {
     //    srand(time(0));
@@ -105,20 +158,23 @@ int main()
     //replace(str, ' ', repStr);
     //return 0;
 
-    int A1[20] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, A2[10] = {1,
-                                                            2,
-                                                            3,
-                                                            4,
-                                                            5,
-                                                            6,
-                                                            7,
-                                                            8,
-                                                            9,
-                                                            10};
-    int *res = mergeTwoSortedArray(A1, A2, 10, 10);
-    for (int i = 0; i < 20; i++)
-    {
-        printf("%d\t", res[i]);
-    }
+    //    int A1[20] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, A2[10] = {1,
+    //2,
+    //3,
+    //4,
+    //5,
+    //6,
+    //7,
+    //8,
+    //9,
+    //10};
+    //int *res = mergeTwoSortedArray(A1, A2, 10, 10);
+    //for (int i = 0; i < 20; i++)
+    //{
+    //printf("%d\t", res[i]);
+    //}
+    //return 0;
+
+    prime(100);
     return 0;
 }
