@@ -475,6 +475,7 @@ void delDup(int *arr, int size)
 /**
  * 单链表的bubblesort
  * 还是太菜了 搞得头疼
+ * shit code
  */
 void listBubbleSort(LinkedList *head)
 {
@@ -485,6 +486,7 @@ void listBubbleSort(LinkedList *head)
     while (curr != tail)
     {
         LinkedList *tPrev = prev, *tCurr = curr;
+        // 这里如果tCurr和tail交换了那么tPrev会等于tail...
         while (tPrev != tail && tCurr != tail)
         {
             LinkedList *next = tCurr->next;
