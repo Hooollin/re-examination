@@ -3,6 +3,12 @@
 #include <stdlib.h>
 #include <math.h>
 
+typedef struct node
+{
+    int data;
+    struct node *next;
+} LinkedList;
+
 void swap(int *arr, int i, int j)
 {
     int t = arr[i];
@@ -322,11 +328,6 @@ void getNumberFromStr(char *str)
  * 20个数据（整型+浮点），逆序输入到单链表中
  * 头插法
  */
-typedef struct node
-{
-    float data;
-    struct node *next;
-} LinkedList;
 
 void reverseBuildLinkedList()
 {
@@ -470,6 +471,50 @@ void delDup(int *arr, int size)
         printf("%d\t", arr[i]);
     }
 }
+
+/**
+ * 单链表的bubblesort
+ * 还是太菜了 搞得头疼
+ */
+void listBubbleSort(LinkedList *head)
+{
+    // tail来指示最后一个结点的位置
+    LinkedList *tail = head->next, *prev = head, *curr = head->next;
+    for (; tail->next != NULL; tail = tail->next)
+        ;
+    while (curr != tail)
+    {
+        LinkedList *tPrev = prev, *tCurr = curr;
+        while (tPrev != tail && tCurr != tail)
+        {
+            LinkedList *next = tCurr->next;
+            if (next->data < tCurr->data)
+            {
+                LinkedList *temp = next->next;
+                next->next = tCurr;
+                tPrev->next = next;
+                tCurr->next = temp;
+            }
+            tPrev = tPrev->next;
+            tCurr = tPrev->next;
+        }
+        tail = tPrev;
+        // curr有可能一直交换到后面去了
+        curr = head->next;
+    }
+
+    for (curr = head->next; curr != NULL; curr = curr->next)
+    {
+        printf("%d->", curr->data);
+    }
+}
+/**
+ * 选择排序的链表实现方式
+ */
+void listSelectionSort(LinkedList *head)
+{
+}
+
 int main()
 {
     //    srand(time(0));
@@ -524,6 +569,18 @@ int main()
     //printf("%d", _strcmp("hello", "hello"));
     //char str[20] = "hz..,,12321,,,*&#@&#";
     //delSpecifiedChars(str);
-    int arr[10] = {2, 3, 3, 3, 3, 3, 3, 3, 3, 3};
-    delDup(arr, 10);
+
+    //int arr[10] = {2, 3, 3, 3, 3, 3, 3, 3, 3, 3};
+    //delDup(arr, 10);
+
+    LinkedList *head = (LinkedList *)malloc(sizeof(LinkedList)), *curr = head;
+    for (int i = 5; i > 0; i--)
+    {
+        LinkedList *t = (LinkedList *)malloc(sizeof(LinkedList));
+        t->data = i;
+        t->next = NULL;
+        curr->next = t;
+        curr = t;
+    }
+    listBubbleSort(head);
 }
