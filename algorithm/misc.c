@@ -476,35 +476,34 @@ void delDup(int *arr, int size)
  * 单链表的bubblesort
  * 还是太菜了 搞得头疼
  * shit code
+ * 思路就是每次都把最大的元素冒泡到tail的位置，tail更新到前面一个结点，重复这个步骤
+ * 注意如果curr与tail Swap过后，那么prev是有可能等于tail的。
+ * curr != tail那么curr->next一定不为NULL，因为tail指向了最后一个元素
+ * 在昨天的基础上优化了代码
  */
 void listBubbleSort(LinkedList *head)
 {
-    // tail来指示最后一个结点的位置
-    LinkedList *tail = head->next, *prev = head, *curr = head->next;
+    // tail指向最后一个元素的位置
+    LinkedList *tail = head;
     for (; tail->next != NULL; tail = tail->next)
         ;
-    while (curr != tail)
+    LinkedList *prev = head, *curr = head->next, *next;
+    while (curr != NULL && curr != tail)
     {
-        LinkedList *tPrev = prev, *tCurr = curr;
-        // 这里如果tCurr和tail交换了那么tPrev会等于tail...
-        while (tPrev != tail && tCurr != tail)
+        for (; prev != tail && curr != tail; prev = prev->next, curr = prev->next)
         {
-            LinkedList *next = tCurr->next;
-            if (next->data < tCurr->data)
+            if (curr->data > curr->next->data)
             {
-                LinkedList *temp = next->next;
-                next->next = tCurr;
-                tPrev->next = next;
-                tCurr->next = temp;
+                next = curr->next;
+                curr->next = next->next;
+                next->next = curr;
+                prev->next = next;
             }
-            tPrev = tPrev->next;
-            tCurr = tPrev->next;
         }
-        tail = tPrev;
-        // curr有可能一直交换到后面去了
+        tail = prev;
+        prev = head;
         curr = head->next;
     }
-
     for (curr = head->next; curr != NULL; curr = curr->next)
     {
         printf("%d->", curr->data);
