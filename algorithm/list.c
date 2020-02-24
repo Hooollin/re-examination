@@ -19,6 +19,37 @@ void _swap(LinkedList *head, int val1, int val2);
 void swap(LinkedList *head, ListNode *node1, ListNode *node2);
 
 /**
+ * 思路就是每次都把最大的元素冒泡到tail的位置，tail更新到前面一个结点，重复这个步骤
+ * 注意如果curr与tail Swap过后，那么prev是有可能等于tail的。
+ * curr != tail那么curr->next一定不为NULL，因为tail指向了最后一个元素
+ * 在昨天的基础上优化了代码
+ */
+void listBubbleSort(LinkedList *head)
+{
+    // tail指向最后一个元素的位置
+    ListNode *tail = head;
+    for (; tail->next != NULL; tail = tail->next)
+        ;
+    ListNode *prev = head, *curr = head->next, *next;
+    while (curr != NULL && curr != tail)
+    {
+        for (; prev != tail && curr != tail; prev = prev->next, curr = prev->next)
+        {
+            if (curr->data > curr->next->data)
+            {
+                next = curr->next;
+                curr->next = next->next;
+                next->next = curr;
+                prev->next = next;
+            }
+        }
+        tail = prev;
+        prev = head;
+        curr = head->next;
+    }
+}
+
+/**
  * 通过值来找到Node并且交换两个Node
  * 不保证元素重复的时候交换的是你想象中的元素
  */
@@ -232,7 +263,7 @@ int main()
 {
     LinkedList *head = buildLinkedList();
     printList(head);
-    _swap(head, 10, 20);
+    listBubbleSort(head);
     printList(head);
     return 0;
 }
