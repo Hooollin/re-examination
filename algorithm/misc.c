@@ -9,6 +9,12 @@ typedef struct node
     struct node *next;
 } LinkedList;
 
+typedef struct ListNode
+{
+    int val;
+    struct ListNode *next;
+} Node;
+
 void swap(int *arr, int i, int j)
 {
     int t = arr[i];
@@ -516,6 +522,77 @@ void listSelectionSort(LinkedList *head)
 {
 }
 
+/**
+ * 给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+ * 简单思路：搞一个哈希表，时间复杂度O(n)
+ * 带佬思路：利用XOR的性质：a^a=0,a^0=a。因此有 a ^ b ^ a = b;
+ */
+void singleNumber(int *arr, int size)
+{
+    int res = 0;
+    for (int i = 0; i < size; i++)
+    {
+        res ^= arr[i];
+    }
+    printf("%d", res);
+}
+
+/**
+ * 将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+ * 很简单实现一下
+ */
+struct ListNode *mergeTwoLists(struct ListNode *l1, struct ListNode *l2)
+{
+    Node *res = (Node *)malloc(sizeof(Node)), *curr1 = l1, *curr2 = l2, *curr = res;
+    res->next = NULL;
+    while (curr1 != NULL && curr2 != NULL)
+    {
+        if (curr1->val > curr2->val)
+        {
+            curr->next = curr2;
+            curr = curr2;
+            curr2 = curr2->next;
+        }
+        else
+        {
+            curr->next = curr1;
+            curr = curr1;
+            curr1 = curr1->next;
+        }
+        curr->next = NULL;
+    }
+    if (curr1 != NULL)
+    {
+        curr->next = curr1;
+    }
+    else
+    {
+        curr->next = curr2;
+    }
+    return res->next;
+}
+
+/**
+ * 递归版本
+ */
+struct ListNode *_mergeTwoLists(struct ListNode *l1, struct ListNode *l2)
+{
+    if (l1 == NULL || l2 == NULL)
+    {
+        return l1 == NULL ? l2 : l1;
+    }
+    if (l1->val > l2->val)
+    {
+        l2->next = _mergeTwoLists(l1, l2->next, l2);
+        return l2;
+    }
+    else
+    {
+        l1->next = _mergeTwoLists(l1->next, l2, l1);
+        return l1;
+    }
+}
+
 int main()
 {
     //    srand(time(0));
@@ -574,14 +651,14 @@ int main()
     //int arr[10] = {2, 3, 3, 3, 3, 3, 3, 3, 3, 3};
     //delDup(arr, 10);
 
-    LinkedList *head = (LinkedList *)malloc(sizeof(LinkedList)), *curr = head;
-    for (int i = 5; i > 0; i--)
-    {
-        LinkedList *t = (LinkedList *)malloc(sizeof(LinkedList));
-        t->data = i;
-        t->next = NULL;
-        curr->next = t;
-        curr = t;
-    }
-    listBubbleSort(head);
+    //    LinkedList *head = (LinkedList *)malloc(sizeof(LinkedList)), *curr = head;
+    //for (int i = 5; i > 0; i--)
+    //{
+    //LinkedList *t = (LinkedList *)malloc(sizeof(LinkedList));
+    //t->data = i;
+    //t->next = NULL;
+    //curr->next = t;
+    //curr = t;
+    //}
+    //listBubbleSort(head);
 }
