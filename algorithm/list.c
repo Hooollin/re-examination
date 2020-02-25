@@ -19,6 +19,74 @@ void _swap(LinkedList *head, int val1, int val2);
 void swap(LinkedList *head, ListNode *node1, ListNode *node2);
 
 /**
+ * 状态越来越好了
+ * 链表的mergesort一次过，果然思路想清楚了就没有什么搞不对的了
+ * 待优化
+ */
+ListNode *merge(ListNode *h1, ListNode *h2)
+{
+    if (h1 == NULL || h2 == NULL)
+    {
+        return h1 == NULL ? h2 : h1;
+    }
+    else
+    {
+        if (h1->data > h2->data)
+        {
+            h2->next = merge(h1, h2->next);
+            return h2;
+        }
+        else
+        {
+            h1->next = merge(h1->next, h2);
+            return h1;
+        }
+    }
+}
+
+ListNode *mergeSort(ListNode *s, ListNode *t)
+{
+    if (s != t)
+    {
+        //printf("%d,%d\n", s->val, t->val  );
+        ListNode *slow = s, *fast = s, *before = slow;
+        while (fast != NULL && fast->next != NULL)
+        {
+            fast = fast->next->next;
+            before = slow;
+            slow = slow->next;
+        }
+        if (fast != NULL)
+        {
+            ListNode *next = slow->next;
+            slow->next = NULL;
+            ListNode *lh = mergeSort(s, slow);
+            ListNode *rh = mergeSort(next, t);
+            return merge(lh, rh);
+        }
+        else
+        {
+            before->next = NULL;
+            ListNode *lh = mergeSort(s, before);
+            ListNode *rh = mergeSort(slow, t);
+            return merge(lh, rh);
+        }
+    }
+    else
+    {
+        return s;
+    }
+}
+
+void sortList(ListNode *head)
+{
+    ListNode *tail;
+    for (tail = head; tail->next != NULL; tail = tail->next)
+        ;
+    head->next = merge_sort(head->next, tail);
+}
+
+/**
  * 思路就是每次都把最大的元素冒泡到tail的位置，tail更新到前面一个结点，重复这个步骤
  * 注意如果curr与tail Swap过后，那么prev是有可能等于tail的。
  * curr != tail那么curr->next一定不为NULL，因为tail指向了最后一个元素
@@ -263,7 +331,7 @@ int main()
 {
     LinkedList *head = buildLinkedList();
     printList(head);
-    listBubbleSort(head);
+    sortList(head);
     printList(head);
     return 0;
 }
