@@ -299,6 +299,57 @@ int _kthElement(int *arr, int lo, int hi, int k)
         hi = _hi;
     }
 }
+/**对于找第k大的进一步优化
+ * 可以通过随机函数随机选取pivot，然后和lo处的元素交换，这样可以基本确保不发生O(n^2)的情况
+ * 太强了
+ */
+int randint(int lo, int hi)
+{
+    return rand() % (hi - lo + 1) + lo;
+}
+int findKthLargest(int *nums, int numsSize, int k)
+{
+    srand(time(0));
+    int lo = 0, hi = numsSize - 1;
+    k = numsSize - k;
+    while (lo <= hi)
+    {
+        int i = lo, j = hi;
+        int pi = randint(i, j);
+        if (pi != i)
+        {
+            swap(nums, pi, i);
+        }
+        int key = nums[i];
+        while (i < j)
+        {
+            while (i < j && nums[j] >= key)
+            {
+                j--;
+            }
+            nums[i] = nums[j];
+            while (i < j && nums[i] < key)
+            {
+                i++;
+            }
+            nums[j] = nums[i];
+        }
+        nums[i] = key;
+        if (i == k)
+        {
+            return key;
+        }
+        else if (i > k)
+        {
+            hi = i - 1;
+        }
+        else
+        {
+            lo = i + 1;
+        }
+    }
+    return -1;
+}
 
 /**
  * 将字符串的数字提取出来
