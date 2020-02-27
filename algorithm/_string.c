@@ -80,11 +80,47 @@ void *memset(void *str, int c, size_t n)
         ;
     return p;
 }
+
+char *strcat(char *dest, const char *src)
+{
+    char *prt = dest;
+    for (; *prt; prt++)
+        ;
+    for (; *src; *prt++ = *src++)
+        ;
+    *prt = '\0';
+    return dest;
+}
+
+int strcmp(const char *str1, const char *str2)
+{
+    for (; *str1 == *str2; ++str1, ++str2)
+    {
+        if (!*str1)
+        {
+            return 0;
+        }
+    }
+    return *str1 > *str2 ? 1 : -1;
+}
+
+int _strncmp(const char *str1, const char *str2, size_t n)
+{
+    for (; n > 0 && *str1 == *str2; n--, str1++, str2++)
+        ;
+    if (n == 0)
+    {
+        return 0;
+    }
+    return *str1 > *str2 ? 1 : -1;
+}
+
 int main()
 {
-    char str1[10] = {"hello"};
-    char str2[10] = {""};
-    memset(str1, 'a', 2);
-    printf("%s", str1);
+    char str1[10] = {"abc"};
+    char str2[10] = {"ab"};
+    size_t n = 5;
+    int res = _strncmp(str1, str2, n);
+    printf("\n%d", res);
     return 0;
 }
