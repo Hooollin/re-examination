@@ -17,6 +17,36 @@ ListNode *findNode(LinkedList *head, int data);
 void printList(LinkedList *head);
 void _swap(LinkedList *head, int val1, int val2);
 void swap(LinkedList *head, ListNode *node1, ListNode *node2);
+void sortList(LinkedList *head);
+
+/**
+ * 分割链表，大于x的放在前面，保证结点的相对顺序不变
+ * 往后插入其实有点头疼，不过还是可取的，bug可能会出现在你通过是否到了tail来判断循环是否结束
+ * 第二种方法是先分割两个链表，代码更简洁
+ */
+ListNode *partition(ListNode *head, int x)
+{
+    ListNode *curr = head, *tail = head->next, *next;
+    int len = 1;
+    for (; tail->next != NULL; tail = tail->next, len++)
+        ;
+    while (len-- > 0)
+    {
+        if (curr->next->data >= x)
+        {
+            next = curr->next->next;
+            curr->next->next = NULL;
+            tail->next = curr->next;
+            curr->next = next;
+            tail = tail->next;
+        }
+        else
+        {
+            curr = curr->next;
+        }
+    }
+    return head;
+}
 
 /**
  * 状态越来越好了
@@ -83,7 +113,7 @@ void sortList(ListNode *head)
     ListNode *tail;
     for (tail = head; tail->next != NULL; tail = tail->next)
         ;
-    head->next = merge_sort(head->next, tail);
+    head->next = mergeSort(head->next, tail);
 }
 
 /**
@@ -331,7 +361,7 @@ int main()
 {
     LinkedList *head = buildLinkedList();
     printList(head);
-    sortList(head);
+    partition(head, 9);
     printList(head);
     return 0;
 }
