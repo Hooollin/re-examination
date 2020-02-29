@@ -13,7 +13,7 @@ typedef struct ListNode
 {
     int val;
     struct ListNode *next;
-} Node;
+} Node, ListNode;
 
 void swap(int *arr, int i, int j)
 {
@@ -644,6 +644,52 @@ struct ListNode *_mergeTwoLists(struct ListNode *l1, struct ListNode *l2)
     }
 }
 
+/**
+ * https://leetcode-cn.com/problems/next-greater-node-in-linked-list/solution/
+ * 单调栈
+ * 动态规划也可以接受
+ * 🐂🍺
+ */
+int *nextLargerNodes(ListNode *head, int *returnSize)
+{
+    int len = 0, top = -1;
+    ListNode *prev = NULL, *curr = head, *n;
+    while (curr != NULL)
+    {
+        n = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = n;
+        len++;
+    }
+    *returnSize = len;
+    int *res = (int *)malloc(sizeof(ListNode) * len);
+    for (int i = 0; i < len; i++)
+    {
+        res[i] = 0;
+    }
+    curr = prev;
+    ListNode *s[len];
+    len -= 1;
+    while (curr != NULL)
+    {
+        for (; top > -1; top--)
+        {
+            if (s[top]->val > curr->val)
+            {
+                res[len--] = s[top]->val;
+                break;
+            }
+        }
+        if (top == -1)
+        {
+            res[len--] = 0;
+        }
+        s[++top] = curr;
+        curr = curr->next;
+    }
+    return res;
+}
 int main()
 {
     //    srand(time(0));
