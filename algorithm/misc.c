@@ -634,12 +634,12 @@ struct ListNode *_mergeTwoLists(struct ListNode *l1, struct ListNode *l2)
     }
     if (l1->val > l2->val)
     {
-        l2->next = _mergeTwoLists(l1, l2->next, l2);
+        l2->next = _mergeTwoLists(l1, l2->next);
         return l2;
     }
     else
     {
-        l1->next = _mergeTwoLists(l1->next, l2, l1);
+        l1->next = _mergeTwoLists(l1->next, l2);
         return l1;
     }
 }
@@ -689,6 +689,33 @@ int *nextLargerNodes(ListNode *head, int *returnSize)
         curr = curr->next;
     }
     return res;
+}
+/**
+ * 找众数
+ * 保证众数存在
+ * 保证数组不为空
+ * 摩尔投票
+ */
+void mostAppearanceNumber(int *nums, int size)
+{
+    int res = nums[0], count = 1;
+    for (int i = 1; i < size; i++)
+    {
+        if (count == 0)
+        {
+            res = nums[i];
+        }
+
+        if (nums[i] == res)
+        {
+            count++;
+        }
+        else
+        {
+            count--;
+        }
+    }
+    printf("%d", res);
 }
 int main()
 {
@@ -758,4 +785,7 @@ int main()
     //curr = t;
     //}
     //listBubbleSort(head);
+
+    int arr[10] = {1, 2, 3, 2, 2, 3, 3, 2, 2, 3};
+    mostAppearanceNumber(arr, 10);
 }
