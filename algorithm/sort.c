@@ -158,6 +158,46 @@ void merge_sort(int *arr, int size)
 {
     _merge_sort(arr, 0, size - 1);
 }
+/**
+ * 默认index是从0开始
+ */
+void heapify(int *arr, int size, int index)
+{
+    int cIndex = index * 2 + 1;
+    if (cIndex >= size)
+    {
+        return;
+    }
+
+    if (cIndex + 1 < size && arr[cIndex + 1] > arr[cIndex])
+    {
+        cIndex = cIndex + 1;
+    }
+
+    if (arr[index] < arr[cIndex])
+    {
+        swap(arr, index, cIndex);
+        heapify(arr, size, cIndex);
+    }
+}
+
+void build_heap(int *arr, int size)
+{
+    for (int i = size / 2; i >= 0; i--)
+    {
+        heapify(arr, size, i);
+    }
+}
+
+void heap_sort(int *arr, int size)
+{
+    build_heap(arr, size);
+    for (int i = size - 1; i > 0; i--)
+    {
+        swap(arr, i, 0);
+        heapify(arr, i, 0);
+    }
+}
 
 void print(int *arr, int size)
 {
@@ -182,6 +222,6 @@ int main()
     }
 
     print(arr, N);
-    merge_sort(arr, N);
+    heap_sort(arr, N);
     print(arr, N);
 }
