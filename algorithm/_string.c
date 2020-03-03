@@ -18,9 +18,11 @@ void *memchr(const void *str, int c, size_t n)
 size_t strlen(const char *str)
 {
     const char *p = str;
-    while (*str++)
-        ;
-    return str - p - 1;
+    while (*str)
+    {
+        str++;
+    }
+    return str - p;
 }
 
 int memcmp(const void *str1, const void *str2, size_t n)
@@ -83,12 +85,14 @@ void *memset(void *str, int c, size_t n)
 
 char *strcat(char *dest, const char *src)
 {
-    char *prt = dest;
-    for (; *prt; prt++)
+    char *p = dest;
+    while (*p)
+    {
+        p++;
+    }
+    while (*p++ = *src++)
         ;
-    for (; *src; *prt++ = *src++)
-        ;
-    *prt = '\0';
+    *p = '\0';
     return dest;
 }
 
@@ -120,7 +124,6 @@ int main()
     char str1[10] = {"abc"};
     char str2[10] = {"ab"};
     size_t n = 5;
-    int res = strlen(str1);
-    printf("\n%d", res);
+    printf("%s", (char *)strcat(str1, str2));
     return 0;
 }
