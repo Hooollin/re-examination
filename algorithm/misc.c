@@ -717,6 +717,10 @@ void mostAppearanceNumber(int *nums, int size)
     }
     printf("%d", res);
 }
+char digitToHexChar(int digit)
+{
+    return "0123456789ABCDEF"[digit];
+}
 int main()
 {
     //    srand(time(0));
@@ -786,6 +790,11 @@ int main()
     //}
     //listBubbleSort(head);
 
-    int arr[10] = {1, 2, 3, 2, 2, 3, 3, 2, 2, 3};
-    mostAppearanceNumber(arr, 10);
+    // int arr[10] = {1, 2, 3, 2, 2, 3, 3, 2, 2, 3};
+    //mostAppearanceNumber(arr, 10);
+
+    for (int i = 0; i < 16; i++)
+    {
+        printf("%c", digitToHexChar(i));
+    }
 }
