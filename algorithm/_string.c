@@ -17,10 +17,10 @@ void *memchr(const void *str, int c, size_t n)
 
 size_t strlen(const char *str)
 {
-    size_t l = 0;
-    for (; str[l] != '\0'; l++)
+    const char *p = str;
+    while (*str++)
         ;
-    return l;
+    return str - p - 1;
 }
 
 int memcmp(const void *str1, const void *str2, size_t n)
@@ -120,7 +120,7 @@ int main()
     char str1[10] = {"abc"};
     char str2[10] = {"ab"};
     size_t n = 5;
-    int res = _strncmp(str1, str2, n);
+    int res = strlen(str1);
     printf("\n%d", res);
     return 0;
 }
